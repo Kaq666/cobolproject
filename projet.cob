@@ -8,12 +8,12 @@ ENVIRONMENT DIVISION.
         FILE-CONTROL.
         SELECT Femploye ASSIGN TO "employes.dat"
         ORGANIZATION INDEXED
-        RECORD KEY fc_idEmploye
+        RECORD KEY fe_idEmploye
         FILE STATUS IS FcER.
 
         SELECT Fproduit ASSIGN TO "produits.dat"
         ORGANIZATION INDEXED
-        RECORD KEY fc_idProduit
+        RECORD KEY fp_idProduit
         FILE STATUS IS FcPR.
 
         SELECT Fclient ASSIGN TO "clients.dat"
@@ -23,7 +23,7 @@ ENVIRONMENT DIVISION.
  
         SELECT Fachat ASSIGN TO "achats.dat"
         ORGANIZATION INDEXED
-        RECORD KEY fc_idAchat
+        RECORD KEY fa_idAchat
         ALTERNATE RECORD KEY fa_idProduit WITH DUPLICATES 
         ALTERNATE RECORD KEY fa_dateAch WITH DUPLICATES
         ALTERNATE RECORD KEY fa_idEmploye WITH DUPLICATES
@@ -80,7 +80,7 @@ DATA DIVISION.
                         03 fa_mois PIC 9(2).
                         03 fa_jour PIC 9(2).
                 02 fa_idEmploye PIC 9(4).
-                02 fc_idClient PIC 9(4).
+                02 fa_idClient PIC 9(4).
 
         FD Fidentifiant. 
         01 identTemp.
