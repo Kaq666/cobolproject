@@ -1,0 +1,8 @@
+IDENTIFICATION DIVISION.
+ENVIRONMENT DIVISION.
+INPUT-OUTPUT SECTION.
+        FILE-CONTROL.
+        SELECT Fcompetitions
+        ASSIGN TO "employe.dat"
+        ORGANIZATION INDEXED
+        FILE STATUS IS enploye_cr.
