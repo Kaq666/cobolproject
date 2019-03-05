@@ -44,17 +44,17 @@ DATA DIVISION.
                       02 fe_idEmploye PIC 9(4).
                       02 fe_nom PIC A(30).
                       02 fe_prenom PIC A(30).
-                      02 fe_salaire PIC 9(10).
-                      02 fe_RIB PIC A(36).
+                      02 fe_salaire PIC 9(7).
+                      02 fe_rib PIC A(23).
                       02 fe_adresse PIC A(30).
-                      02 fe_nbVentes PIC 9(36).
+                      02 fe_nbVentes PIC 9(13).
 
            FD Fproduit.
               01 produitTemp.
                       02 fp_idProduit PIC 9(4).
                       02 fp_nom PIC A(30).
-                      02 fp_prix PIC 9(10).
-                      02 fp_quantite PIC 9(36).
+                      02 fp_prix PIC 9(5).
+                      02 fp_quantite PIC 9(13).
 
            FD Fclient.
               01 clientTemp.
@@ -66,7 +66,7 @@ DATA DIVISION.
                               03 fc_mois PIC 9(2).
                               03 fc_jour PIC 9(2).
                       02 fc_codePost PIC 9(5).
-                      02 fc_nbArtAch PIC 9(36).
+                      02 fc_nbArtAch PIC 9(13).
 
            FD Fachat.
               01 achatTemp.
@@ -92,7 +92,7 @@ DATA DIVISION.
                       	03 fh_annee PIC 9(4).
                               03 fh_mois PIC 9(2).
                               03 fh_idArticle PIC 9(4).
-                      02 fh_nbAricleVendu PIC 9(36).
+                      02 fh_nbAricleVendu PIC 9(13).
 
 
         WORKING-STORAGE SECTION.
@@ -107,4 +107,24 @@ PROCEDURE DIVISION.
             *ICI CORPS DU PROGRAMME
 STOP RUN.
 
-ajout_athlete.
+ajout_employe.
+         DISPLAY "Entrez le nom : "
+         ACCEPT fe_nom
+         DISPLAY "Entrez le prénom : "
+         ACCEPT fe_prenom
+         PERFORM WITH TEST AFTER UNTIL fe_salaire<55 AND
+                                                   fe_salaire>1171,34
+            DISPLAY "Entrez le salaire : "
+            ACCEPT fe_salaire
+         END-PERFORM
+         DISPLAY "Entrez le RIB : "
+         ACCEPT fe_rib
+         DISPLAY "Entrez l'adresse : "
+         ACCEPT fe_adresse
+         PERFORM WITH TEST AFTER UNTIL fe_nbVente>0
+            DISPLAY "Entrez le nombre de vente : "
+            ACCEPT fe_nbVente
+         END-PERFORM
+         OPEN EXTEND Fcompetitions
+         WRITE fcoTemp
+         CLOSE Fcompetitions.
