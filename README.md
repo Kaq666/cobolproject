@@ -1,2 +1,2 @@
 # cobolproject
-This is a cobol projetc.
+This is a cobol project.
