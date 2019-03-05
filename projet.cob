@@ -1,10 +1,10 @@
 IDENTIFICATION DIVISION.
 
-        PROGRAM-ID. Projet. 
+        PROGRAM-ID. Projet.
 
 ENVIRONMENT DIVISION.
 
-        INPUT-OUTPUT SECTION. 
+        INPUT-OUTPUT SECTION.
         FILE-CONTROL.
         SELECT Femploye ASSIGN TO "employes.dat"
         ORGANIZATION INDEXED
@@ -19,29 +19,29 @@ ENVIRONMENT DIVISION.
         SELECT Fclient ASSIGN TO "clients.dat"
         ORGANIZATION INDEXED
         RECORD KEY fc_idClient
-        FILE STATUS IS FcCR.  
- 
+        FILE STATUS IS FcCR.
+
         SELECT Fachat ASSIGN TO "achats.dat"
         ORGANIZATION INDEXED
         RECORD KEY fa_idAchat
-        ALTERNATE RECORD KEY fa_idProduit WITH DUPLICATES 
+        ALTERNATE RECORD KEY fa_idProduit WITH DUPLICATES
         ALTERNATE RECORD KEY fa_dateAch WITH DUPLICATES
         ALTERNATE RECORD KEY fa_idEmploye WITH DUPLICATES
         ALTERNATE RECORD KEY fa_idClient WITH DUPLICATES
-        FILE STATUS IS FcAR. 
+        FILE STATUS IS FcAR.
 
         SELECT Fhistorique ASSIGN TO "historiques.dat"
         ORGANIZATION INDEXED
         RECORD KEY fh_cle
-        FILE STATUS IS FcHR. 
+        FILE STATUS IS FcHR.
 
         SELECT Fidentifiant ASSIGN TO "identifiants.dat"
-        ORGANIZATION SEQUENTIAL 
+        ORGANIZATION SEQUENTIAL
         FILE STATUS IS FcIR.
 
 DATA DIVISION.
 
-        FILE SECTION. 
+        FILE SECTION.
         FD Femploye.
         01 employeTemp.
                 02 fe_idEmploye PIC 9(4).
@@ -82,33 +82,26 @@ DATA DIVISION.
                 02 fa_idEmploye PIC 9(4).
                 02 fa_idClient PIC 9(4).
 
-        FD Fidentifiant. 
+        FD Fidentifiant.
         01 identTemp.
                 02 fi_idEmploye PIC 9(4).
                 02 fi_idProduit PIC 9(4).
                 02 fi_idClient PIC 9(4).
                 02 fi_idAchat PIC 9(4).
 
-        FD Fhistorique. 
+        FD Fhistorique.
         01 histoTemp.
                 02 fh_cle.
                 	03 fh_annee PIC 9(4).
                         03 fh_mois PIC 9(2).
                         03 fh_idArticle PIC 9(4).
                 02 fh_nbAricleVendu PIC 9(36).
-                
-                
+
+
        WORKING-STORAGE SECTION.
-       77 FcER PIC 9(2). 
-       77 FcPR PIC 9(2).  
-       77 FcCR PIC 9(2). 
+       77 FcER PIC 9(2).
+       77 FcPR PIC 9(2).
+       77 FcCR PIC 9(2).
        77 FcAR PIC 9(2).
        77 FcIR PIC 9(2).
-       77 FcHR PIC 9(2). 
-        
-
-
-
-
-
-
+       77 FcHR PIC 9(2).
