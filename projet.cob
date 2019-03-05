@@ -107,5 +107,29 @@ DATA DIVISION.
        77 FcHR PIC 9(2).
 
 PROCEDURE DIVISION.
+
+STOP RUN.
         ajout_produit.
-            
+            OPEN EXTEND Fproduit.
+
+            PERFORM WITH TEST AFTER UNTIL produitTemp.fp_idProduit > 0
+                DISPLAY "Saisir l'identifiant du produit : "
+                WRITE produitTemp.fp_idProduit
+            END-PERFORM
+
+            DISPLAY "Saisir le nom du produit : "
+            WRITE produitTemp.fp_nom
+
+            PERFORM WITH TEST AFTER UNTIL produitTemp.fp_prix > 0
+                DISPLAY "Saisir le prix du produit : "
+                WRITE produitTemp.fp_prix
+            END-PERFORM
+
+            PERFORM WITH TEST AFTER UNTIL produitTemp.fp_quantite > 0
+                DISPLAY "Saisir la quantite du produit : "
+                WRITE produitTemp.fp_quantite
+            END-PERFORM
+
+            WRITE produitTemp
+
+            CLOSE Fproduit.
