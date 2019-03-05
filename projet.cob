@@ -82,7 +82,7 @@ DATA DIVISION.
                 02 fa_idEmploye PIC 9(4).
                 02 fc_idClient PIC 9(4).
 
-        FD Fidentifiants. 
+        FD Fidentifiant. 
         01 identTemp.
                 02 fi_idEmploye PIC 9(4).
                 02 fi_idProduit PIC 9(4).
