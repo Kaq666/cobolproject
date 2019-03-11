@@ -103,28 +103,52 @@ DATA DIVISION.
           77 FcIR PIC 9(2).
           77 FcHR PIC 9(2).
 
+          77 fe_idEmployeTamp PIC 9(4).
+          77 fe_nomTamp PIC A(30).
+          77 fe_prenomTamp PIC A(30).
+          77 W-TROUVE PIC 9(1).
+          77 W-FIN PIC 9(1).
+
 PROCEDURE DIVISION.
             *>ICI CORPS DU PROGRAMME
 STOP RUN.
 
 ajout_employe.
-         DISPLAY "Entrez le nom : "
-         ACCEPT fe_nom
-         DISPLAY "Entrez le prénom : "
-         ACCEPT fe_prenom
-         PERFORM WITH TEST AFTER UNTIL fe_salaire<55 AND
+         OPEN I-O Femploye
+            PERFORM WITH TEST AFTER UNTIL W-TROUVE = 0
+               DISPLAY "Entrez identifiant : "
+               ACCEPT fe_idEmployeTamp
+               DISPLAY "Entrez le nom : "
+               ACCEPT fe_nomTamp
+               DISPLAY "Entrez le prénom : "
+               ACCEPT fe_prenomTamp
+               MOVE 0 TO W-FIN
+               MOVE 0 TO W-TROUVE
+               PERFORM WITH TEST AFTER UNTIL W-TROUVE = 1 OR W-FIN = 1
+                  READ Femploye NEXT
+                  AT END
+                     MOVE 1 TO W-FIN
+                  NOT AT END
+                     IF fe_idEmployeTamp = fe_idEmploye AND
+                                    fe_nomTamp = fe_nom AND
+                                       fe_prenomTamp = fe_prenom THEN
+                        MOVE 1 TO W-TROUVE
+                     END-IF
+                  END-READ
+               END-PERFORM
+             END-PERFORM
+             PERFORM WITH TEST AFTER UNTIL fe_salaire<55 AND
                                                    fe_salaire>1171.34
-            DISPLAY "Entrez le salaire : "
-            ACCEPT fe_salaire
-         END-PERFORM
-         DISPLAY "Entrez le RIB : "
-         ACCEPT fe_rib
-         DISPLAY "Entrez l'adresse : "
-         ACCEPT fe_adresse
-         PERFORM WITH TEST AFTER UNTIL fe_nbVente>0
-            DISPLAY "Entrez le nombre de vente : "
-            ACCEPT fe_nbVente
-         END-PERFORM
-         OPEN EXTEND Femploye
-         WRITE employeTemp
+               DISPLAY "Entrez le salaire : "
+               ACCEPT fe_salaire
+             END-PERFORM
+             DISPLAY "Entrez le RIB : "
+             ACCEPT fe_rib
+             DISPLAY "Entrez l'adresse : "
+             ACCEPT fe_adresse
+             PERFORM WITH TEST AFTER UNTIL fe_nbVente>0
+               DISPLAY "Entrez le nombre de vente : "
+               ACCEPT fe_nbVente
+            END-PERFORM
+            WRITE employeTemp
          CLOSE Femploye.
