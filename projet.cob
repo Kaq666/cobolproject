@@ -103,9 +103,9 @@ DATA DIVISION.
           77 FcIR PIC 9(2).
           77 FcHR PIC 9(2).
 
-          77 fe_idEmployeTamp PIC 9(4).
-          77 fe_nomTamp PIC A(30).
-          77 fe_prenomTamp PIC A(30).
+          77 we_idEmploye PIC 9(4).
+          77 we_nom PIC A(30).
+          77 we_prenom PIC A(30).
           77 W-TROUVE PIC 9(1).
           77 W-FIN PIC 9(1).
 
@@ -117,11 +117,11 @@ ajout_employe.
          OPEN I-O Femploye
             PERFORM WITH TEST AFTER UNTIL W-TROUVE = 0
                DISPLAY "Entrez identifiant : "
-               ACCEPT fe_idEmployeTamp
+               ACCEPT we_idEmploye
                DISPLAY "Entrez le nom : "
-               ACCEPT fe_nomTamp
+               ACCEPT we_nom
                DISPLAY "Entrez le prénom : "
-               ACCEPT fe_prenomTamp
+               ACCEPT we_prenom
                MOVE 0 TO W-FIN
                MOVE 0 TO W-TROUVE
                PERFORM WITH TEST AFTER UNTIL W-TROUVE = 1 OR W-FIN = 1
@@ -129,9 +129,9 @@ ajout_employe.
                   AT END
                      MOVE 1 TO W-FIN
                   NOT AT END
-                     IF fe_idEmployeTamp = fe_idEmploye AND
-                                    fe_nomTamp = fe_nom AND
-                                       fe_prenomTamp = fe_prenom THEN
+                     IF we_idEmploye = fe_idEmploye AND
+                                       we_nom = fe_nom AND
+                                             we_prenom = fe_prenom THEN
                         MOVE 1 TO W-TROUVE
                      END-IF
                   END-READ
