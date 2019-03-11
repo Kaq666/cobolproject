@@ -44,10 +44,10 @@ DATA DIVISION.
                       02 fe_idEmploye PIC 9(4).
                       02 fe_nom PIC A(30).
                       02 fe_prenom PIC A(30).
-                      02 fe_salaire PIC 9(7).
+                      02 fe_salaire PIC 9(5)V9(2).
                       02 fe_rib PIC A(23).
                       02 fe_adresse PIC A(30).
-                      02 fe_nbVentes PIC 9(13).
+                      02 fe_nbVente PIC 9(13).
 
            FD Fproduit.
               01 produitTemp.
@@ -104,7 +104,7 @@ DATA DIVISION.
           77 FcHR PIC 9(2).
 
 PROCEDURE DIVISION.
-            *ICI CORPS DU PROGRAMME
+            *>ICI CORPS DU PROGRAMME
 STOP RUN.
 
 ajout_employe.
@@ -113,7 +113,7 @@ ajout_employe.
          DISPLAY "Entrez le prénom : "
          ACCEPT fe_prenom
          PERFORM WITH TEST AFTER UNTIL fe_salaire<55 AND
-                                                   fe_salaire>1171,34
+                                                   fe_salaire>1171.34
             DISPLAY "Entrez le salaire : "
             ACCEPT fe_salaire
          END-PERFORM
@@ -125,6 +125,6 @@ ajout_employe.
             DISPLAY "Entrez le nombre de vente : "
             ACCEPT fe_nbVente
          END-PERFORM
-         OPEN EXTEND Fcompetitions
-         WRITE fcoTemp
-         CLOSE Fcompetitions.
+         OPEN EXTEND Femploye
+         WRITE employeTemp
+         CLOSE Femploye.
