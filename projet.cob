@@ -102,7 +102,8 @@ DATA DIVISION.
           77 FcAR PIC 9(2).
           77 FcIR PIC 9(2).
           77 FcHR PIC 9(2).
-          77 pe   PIC 9(1).
+          77 w_pe PIC 9(1).
+          77 w_idProduit PIC 9(4).
 
 PROCEDURE DIVISION.
             *>ICI CORPS DU PROGRAMME
@@ -115,17 +116,17 @@ recherche_produit.
         ACCEPT fp_idProduit
     END-PERFORM
     READ Fproduit
-    INVALID KEY MOVE 0 TO pe
-    NOT INVALID KEY MOVE 1 TO pe
+    INVALID KEY MOVE 0 TO w_pe
+    NOT INVALID KEY MOVE 1 TO w_pe
     END-READ
     CLOSE Fproduit.
 
 ajout_produit.
         OPEN EXTEND Fproduit
         PERFORM WITH TEST AFTER UNTIL fp_idProduit > 0
-        AND pe = 0
+        AND w_pe = 0
             DISPLAY "Saisir l'identifiant du produit : "
-            ACCEPT fp_idProduit
+            ACCEPT w_idProduit
             PERFORM recherche_produit
         END-PERFORM
         DISPLAY "Saisir le nom du produit : "
@@ -138,5 +139,6 @@ ajout_produit.
             DISPLAY "Saisir la quantite du produit : "
             ACCEPT fp_quantite
         END-PERFORM
+        MOVE w_idProduit TO fp_idProduit
         WRITE produitTemp
         CLOSE Fproduit.
