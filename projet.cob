@@ -102,6 +102,13 @@ DATA DIVISION.
           77 FcAR PIC 9(2).
           77 FcIR PIC 9(2).
           77 FcHR PIC 9(2).
+
+          77 we_idEmploye PIC 9(4).
+          77 we_nom PIC A(30).
+          77 we_prenom PIC A(30).
+          77 W-TROUVE PIC 9(1).
+          77 W-FIN PIC 9(1).
+
           77 w_pe PIC 9(1).
           77 w_idProduit PIC 9(4).
 
@@ -110,35 +117,76 @@ PROCEDURE DIVISION.
 STOP RUN.
 
 recherche_produit.
-    OPEN INPUT Fproduit
-    PERFORM WITH TEST AFTER UNTIL fp_idProduit > 0
-        DISPLAY "Saisir l'identifiant du produit : "
-        ACCEPT fp_idProduit
-    END-PERFORM
-    READ Fproduit
-    INVALID KEY MOVE 0 TO w_pe
-    NOT INVALID KEY MOVE 1 TO w_pe
-    END-READ
-    CLOSE Fproduit.
+         OPEN INPUT Fproduit
+            PERFORM WITH TEST AFTER UNTIL fp_idProduit > 0
+               DISPLAY "Saisir l'identifiant du produit : "
+               ACCEPT fp_idProduit
+            END-PERFORM
+            READ Fproduit
+               INVALID KEY MOVE 0 TO w_pe
+               NOT INVALID KEY MOVE 1 TO w_pe
+            END-READ
+         CLOSE Fproduit.
 
 ajout_produit.
-        OPEN EXTEND Fproduit
-        PERFORM WITH TEST AFTER UNTIL fp_idProduit > 0
-        AND w_pe = 0
-            DISPLAY "Saisir l'identifiant du produit : "
-            ACCEPT w_idProduit
-            PERFORM recherche_produit
-        END-PERFORM
-        DISPLAY "Saisir le nom du produit : "
-        ACCEPT fp_nom
-        PERFORM WITH TEST AFTER UNTIL fp_prix > 0
-            DISPLAY "Saisir le prix du produit : "
-            ACCEPT fp_prix
-        END-PERFORM
-        PERFORM WITH TEST AFTER UNTIL fp_quantite > 0
-            DISPLAY "Saisir la quantite du produit : "
-            ACCEPT fp_quantite
-        END-PERFORM
-        MOVE w_idProduit TO fp_idProduit
-        WRITE produitTemp
-        CLOSE Fproduit.
+         OPEN EXTEND Fproduit
+            PERFORM WITH TEST AFTER UNTIL fp_idProduit > 0 AND w_pe = 0
+               DISPLAY "Saisir l'identifiant du produit : "
+               ACCEPT w_idProduit
+               PERFORM recherche_produit
+            END-PERFORM
+            DISPLAY "Saisir le nom du produit : "
+            ACCEPT fp_nom
+            PERFORM WITH TEST AFTER UNTIL fp_prix > 0
+               DISPLAY "Saisir le prix du produit : "
+               ACCEPT fp_prix
+            END-PERFORM
+            PERFORM WITH TEST AFTER UNTIL fp_quantite > 0
+               DISPLAY "Saisir la quantite du produit : "
+               ACCEPT fp_quantite
+            END-PERFORM
+            MOVE w_idProduit TO fp_idProduit
+            WRITE produitTemp
+         CLOSE Fproduit.
+
+ajout_employe.
+         OPEN I-O Femploye
+            PERFORM WITH TEST AFTER UNTIL W-TROUVE = 0
+               DISPLAY "Entrez identifiant : "
+               ACCEPT we_idEmploye
+               DISPLAY "Entrez le nom : "
+               ACCEPT we_nom
+               DISPLAY "Entrez le prénom : "
+               ACCEPT we_prenom
+               MOVE 0 TO W-FIN
+               MOVE 0 TO W-TROUVE
+               PERFORM WITH TEST AFTER UNTIL W-TROUVE = 1 OR W-FIN = 1
+                  READ Femploye NEXT
+                  AT END
+                     MOVE 1 TO W-FIN
+                  NOT AT END
+                     IF we_idEmploye = fe_idEmploye AND
+                                       we_nom = fe_nom AND
+                                             we_prenom = fe_prenom THEN
+                        MOVE 1 TO W-TROUVE
+                     END-IF
+                  END-READ
+               END-PERFORM
+             END-PERFORM
+             PERFORM WITH TEST AFTER UNTIL fe_salaire<55 AND
+                                                   fe_salaire>1171.34
+               DISPLAY "Entrez le salaire : "
+               ACCEPT fe_salaire
+             END-PERFORM
+             DISPLAY "Entrez le RIB : "
+             ACCEPT fe_rib
+             DISPLAY "Entrez l'adresse : "
+             ACCEPT fe_adresse
+             PERFORM WITH TEST AFTER UNTIL fe_nbVente>0
+               DISPLAY "Entrez le nombre de vente : "
+               ACCEPT fe_nbVente
+            END-PERFORM
+            WRITE employeTemp
+         CLOSE Femploye.
+
+*>enregistre_vente.
