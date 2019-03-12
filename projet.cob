@@ -102,17 +102,23 @@ DATA DIVISION.
           77 FcAR PIC 9(2).
           77 FcIR PIC 9(2).
           77 FcHR PIC 9(2).
+<<<<<<< HEAD
 
           77 we_idEmploye PIC 9(4).
           77 we_nom PIC A(30).
           77 we_prenom PIC A(30).
           77 W-TROUVE PIC 9(1).
           77 W-FIN PIC 9(1).
+=======
+          77 w_pe PIC 9(1).
+          77 w_idProduit PIC 9(4).
+>>>>>>> master
 
 PROCEDURE DIVISION.
             *>ICI CORPS DU PROGRAMME
 STOP RUN.
 
+<<<<<<< HEAD
 ajout_employe.
          OPEN I-O Femploye
             PERFORM WITH TEST AFTER UNTIL W-TROUVE = 0
@@ -152,3 +158,38 @@ ajout_employe.
             END-PERFORM
             WRITE employeTemp
          CLOSE Femploye.
+=======
+recherche_produit.
+    OPEN INPUT Fproduit
+    PERFORM WITH TEST AFTER UNTIL fp_idProduit > 0
+        DISPLAY "Saisir l'identifiant du produit : "
+        ACCEPT fp_idProduit
+    END-PERFORM
+    READ Fproduit
+    INVALID KEY MOVE 0 TO w_pe
+    NOT INVALID KEY MOVE 1 TO w_pe
+    END-READ
+    CLOSE Fproduit.
+
+ajout_produit.
+        OPEN EXTEND Fproduit
+        PERFORM WITH TEST AFTER UNTIL fp_idProduit > 0
+        AND w_pe = 0
+            DISPLAY "Saisir l'identifiant du produit : "
+            ACCEPT w_idProduit
+            PERFORM recherche_produit
+        END-PERFORM
+        DISPLAY "Saisir le nom du produit : "
+        ACCEPT fp_nom
+        PERFORM WITH TEST AFTER UNTIL fp_prix > 0
+            DISPLAY "Saisir le prix du produit : "
+            ACCEPT fp_prix
+        END-PERFORM
+        PERFORM WITH TEST AFTER UNTIL fp_quantite > 0
+            DISPLAY "Saisir la quantite du produit : "
+            ACCEPT fp_quantite
+        END-PERFORM
+        MOVE w_idProduit TO fp_idProduit
+        WRITE produitTemp
+        CLOSE Fproduit.
+>>>>>>> master
