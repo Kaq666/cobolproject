@@ -90,8 +90,8 @@ DATA DIVISION.
               01 histoTemp.
                       02 fh_cle.
                       	03 fh_annee PIC 9(4).
-                              03 fh_mois PIC 9(2).
-                              03 fh_idArticle PIC 9(4).
+                        03 fh_mois PIC 9(2).
+                        03 fh_idArticle PIC 9(4).
                       02 fh_nbAricleVendu PIC 9(13).
 
 
@@ -111,6 +111,10 @@ DATA DIVISION.
 
           77 w_pe PIC 9(1).
           77 w_idProduit PIC 9(4).
+
+          77 wh_annee PIC 9(4).
+          77 wh_mois PIC 9(4).
+          77 wh_compteur PIC 9(5).
 
 PROCEDURE DIVISION.
             *>ICI CORPS DU PROGRAMME
@@ -189,4 +193,34 @@ ajout_employe.
             WRITE employeTemp
          CLOSE Femploye.
 
-*>enregistre_vente.
+enregistre_historique.
+         OPEN INPUT Fachat
+            DISPLAY "Entrez l'annee : "
+            ACCEPT wh_annee
+            DISPLAY "Entrez le mois : "
+            ACCEPT wh_mois
+            Move 1 TO fa_idProduit
+            START Fachat, KEY IS = fa_idProduit
+            INVALID KEY
+               DISPLAY 'FIN'
+            NOT INVALID KEY
+            MOVE 1 TO w_idProduit
+            MOVE 0 TO wh_compteur
+               PERFORM WITH TEST AFTER UNTIL W-FIN = 1
+                  READ Fachat NEXT
+                  AT END
+                     MOVE 1 TO W-FIN
+                  NOT AT END
+                     IF w_idProduit = fa_idProduit THEN
+                        ADD 1 TO wh_compteur
+                     ELSE
+                        MOVE fa_idProduit TO w_idProduit
+                        OPEN EXTEND Fhistorique
+                           WRITE histoTemp
+                        CLOSE Fhistorique
+                        MOVE 1 TO wh_compteur
+                     END-IF
+                  END-READ
+               END-PERFORM
+            END-START
+         CLOSE Fachat.
