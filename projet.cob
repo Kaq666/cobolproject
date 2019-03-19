@@ -103,6 +103,10 @@ DATA DIVISION.
           77 FcAR PIC 9(2).
           77 FcIR PIC 9(2).
           77 FcHR PIC 9(2).
+          77 VRAI PIC X VALUE "V".
+          77 FAUX PIC x VALUE "F".
+          77 FIN-MENU PIC X.
+          77 CHOIX-MENU PIC X.  
 
           77 we_idEmploye PIC 9(4).
           77 we_nom PIC A(30).
@@ -119,8 +123,36 @@ DATA DIVISION.
 
 PROCEDURE DIVISION.
             *>ICI CORPS DU PROGRAMME
+             MOVE FAUX TO FIN-MENU.
+             MOVE VRAI TO ERREUR.
+             PERFORM MENU UNTIL FIN-MENU = VRAI.
 STOP RUN.
 
+MENU.
+         DISPLAY "Quelle action souhaitez-vous faire ?"
+         DISPLAY " "
+         DISPLAY "A. Ajouter un client."
+         DISPLAY "B. Rechercher le premier client."
+         DISPLAY "C. Ajouter un employe."
+         DISPLAY "D. Enregistrer les ventes."
+         DISPLAY "E. Ajouter un produit."
+         DISPLAY "F. Rechercher un produit."
+         DISPLAY "G. Calculer le pourcentage d'un produit."
+         DISPLAY "H. Ajout d'un achat."
+         DISPLAY "I. Calculer le meilleur employe."
+         DISPLAY "J. Quitter."
+         ACCEPT CHOIX-MENU
+         EVALUATE CHOIX-MENU
+         WHEN "A"
+                PERFORM AJOUT_CLIENT
+         WHEN "B"
+                PERFORM RECHERCHE_PREMIER_CLIENT
+         WHEN "J"
+                MOVE VRAI TO FIN-MENU
+         WHEN OTHER
+                DISPLAY "choix non valide."
+         END-EVALUATE.
+      
 recherche_produit.
          OPEN INPUT Fproduit
             PERFORM WITH TEST AFTER UNTIL fp_idProduit > 0
