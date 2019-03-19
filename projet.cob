@@ -48,6 +48,7 @@ DATA DIVISION.
                       02 fe_rib PIC A(23).
                       02 fe_adresse PIC A(30).
                       02 fe_nbVente PIC 9(13).
+                      02 fe_role PIC 9(1).
 
            FD Fproduit.
               01 produitTemp.
