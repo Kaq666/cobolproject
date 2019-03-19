@@ -7,6 +7,8 @@ INPUT-OUTPUT SECTION.
            SELECT Femploye ASSIGN TO "employes.dat"
            ORGANIZATION INDEXED
            RECORD KEY fe_idEmploye
+           ALTERNATE RECORD KEY fe_login WITH DUPLICATES
+           ALTERNATE RECORD KEY fe_mdp WITH DUPLICATES
            FILE STATUS IS FcER.
 
            SELECT Fproduit ASSIGN TO "produits.dat"
@@ -49,6 +51,8 @@ DATA DIVISION.
                       02 fe_adresse PIC A(30).
                       02 fe_nbVente PIC 9(13).
                       02 fe_role PIC 9(1).
+                      02 fe_login PIC A(30).
+                      02 fe_mdp PIC A(30).
 
            FD Fproduit.
               01 produitTemp.
@@ -127,8 +131,15 @@ PROCEDURE DIVISION.
              MOVE VRAI TO ERREUR.
              PERFORM MENU UNTIL FIN-MENU = VRAI.
 STOP RUN.
+      
+      
+menu.
+         IF fe_role = 1
+           THEN PERFORM menu_admin
+           ELSE PERFORM menu_employe
+         END-IF.
 
-MENU.
+menu_admin.
          DISPLAY "Quelle action souhaitez-vous faire ?"
          DISPLAY " "
          DISPLAY "A. Ajouter un client."
@@ -152,6 +163,43 @@ MENU.
          WHEN OTHER
                 DISPLAY "choix non valide."
          END-EVALUATE.
+      
+menu_employe.
+         DISPLAY "Quelle action souhaitez-vous faire ?"
+         DISPLAY " "
+         DISPLAY "A. Ajouter un client."
+         DISPLAY "B. Rechercher le premier client."
+         DISPLAY "C. Enregistrer les ventes."
+         DISPLAY "D. Ajouter un produit."
+         DISPLAY "E. Rechercher un produit."
+         DISPLAY "F. Quitter."
+         ACCEPT CHOIX-MENU
+         EVALUATE CHOIX-MENU
+         WHEN "A"
+                PERFORM AJOUT_CLIENT
+         WHEN "B"
+                PERFORM RECHERCHE_PREMIER_CLIENT
+         WHEN "J"
+                MOVE VRAI TO FIN-MENU
+         WHEN OTHER
+                DISPLAY "choix non valide."
+         END-EVALUATE.
+      
+login.
+         OPEN INPUT Femploye
+            PERFORM WITH TEST AFTER UNTIL FcER
+               DISPLAY "Saisir le login : "
+               ACCEPT fe_login
+               DISPLAY "Saisir le mot de passe : "
+               ACCEPT fe_mdp
+            END-PERFORM
+            READ Femploye
+               INVALID KEY
+               DISPLAY "Connection refusé !"
+               PERFORM login
+               NOT INVALID KEY DISPLAY "Connection réussie !"
+            END-READ
+         CLOSE Femploye.
       
 recherche_produit.
          OPEN INPUT Fproduit
