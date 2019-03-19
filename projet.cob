@@ -166,7 +166,7 @@ ajout_employe.
                      MOVE 1 TO W-FIN
                   NOT AT END
                      IF we_idEmploye = fe_idEmploye AND
-                                       we_nom = fe_nom AND
+                                         we_nom = fe_nom AND
                                              we_prenom = fe_prenom THEN
                         MOVE 1 TO W-TROUVE
                      END-IF
