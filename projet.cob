@@ -51,7 +51,6 @@ DATA DIVISION.
                       02 fe_adresse PIC A(30).
                       02 fe_nbVente PIC 9(13).
                       02 fe_role PIC 9(1).
-                      02 fe_login PIC A(30).
                       02 fe_mdp PIC A(30).
 
            FD Fproduit.
@@ -124,6 +123,8 @@ DATA DIVISION.
           77 wh_annee PIC 9(4).
           77 wh_mois PIC 9(4).
           77 wh_compteur PIC 9(5).
+      
+          77 w_login PIC 9(1).
 
 PROCEDURE DIVISION.
             *>ICI CORPS DU PROGRAMME
@@ -187,18 +188,22 @@ menu_employe.
       
 login.
          OPEN INPUT Femploye
-            PERFORM WITH TEST AFTER UNTIL FcER
-               DISPLAY "Saisir le login : "
-               ACCEPT fe_login
-               DISPLAY "Saisir le mot de passe : "
-               ACCEPT fe_mdp
+            PERFORM WITH TEST AFTER UNTIL w_login > 0
+                    PERFORM WITH TEST AFTER UNTIL FcER
+                       DISPLAY "Saisir votre id : "
+                       ACCEPT fe_idEmploye
+                       DISPLAY "Saisir le mot de passe : "
+                       ACCEPT fe_mdp
+                    END-PERFORM
+                    READ Femploye
+                       INVALID KEY
+                       DISPLAY "Connection refusé !"
+                       MOVE 0 TO w_login
+                       NOT INVALID KEY
+                       DISPLAY "Connection réussie !"
+                       MOVE 1 TO w_login
+                    END-READ
             END-PERFORM
-            READ Femploye
-               INVALID KEY
-               DISPLAY "Connection refusé !"
-               PERFORM login
-               NOT INVALID KEY DISPLAY "Connection réussie !"
-            END-READ
          CLOSE Femploye.
       
 recherche_produit.
