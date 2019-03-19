@@ -116,6 +116,7 @@ DATA DIVISION.
           77 we_prenom PIC A(30).
           77 W-TROUVE PIC 9(1).
           77 W-FIN PIC 9(1).
+          77 w_ee PIC 9(1).
 
           77 w_pe PIC 9(1).
           77 w_idProduit PIC 9(4).
@@ -125,6 +126,14 @@ DATA DIVISION.
           77 wh_compteur PIC 9(5).
 
           77 w_login PIC 9(1).
+
+          77 wa_idAchat PIC 9(4).
+          77 wa_jour PIC 9(2).
+          77 wa_idClient PIC 9(4).
+          77 w_ae PIC 9(1).
+
+          77 w_ce PIC 9(1).
+
 
 PROCEDURE DIVISION.
             *>ICI CORPS DU PROGRAMME
@@ -207,21 +216,41 @@ login.
 
 recherche_produit.
          OPEN INPUT Fproduit
-            PERFORM WITH TEST AFTER UNTIL fp_idProduit > 0
-               DISPLAY "Saisir l'identifiant du produit : "
-               ACCEPT fp_idProduit
-            END-PERFORM
             READ Fproduit
                INVALID KEY MOVE 0 TO w_pe
                NOT INVALID KEY MOVE 1 TO w_pe
             END-READ
          CLOSE Fproduit.
 
+recherche_employe.
+         OPEN INPUT Femploye
+            READ Femploye
+               INVALID KEY MOVE 0 TO w_ee
+               NOT INVALID KEY MOVE 1 TO w_ee
+            END-READ
+         CLOSE Femploye.
+
+recherche_client.
+         OPEN INPUT Fclient
+            READ Fclient
+               INVALID KEY MOVE 0 TO w_ce
+               NOT INVALID KEY MOVE 1 TO w_ce
+            END-READ
+         CLOSE Fclient.
+
+recherche_achat.
+         OPEN INPUT Fachat
+            READ Fachat
+               INVALID KEY MOVE 0 TO w_ae
+               NOT INVALID KEY MOVE 1 TO w_ae
+            END-READ
+         CLOSE Fachat.
+
 ajout_produit.
          OPEN EXTEND Fproduit
             PERFORM WITH TEST AFTER UNTIL fp_idProduit > 0 AND w_pe = 0
                DISPLAY "Saisir l'identifiant du produit : "
-               ACCEPT w_idProduit
+               ACCEPT fp_idProduit
                PERFORM recherche_produit
             END-PERFORM
             DISPLAY "Saisir le nom du produit : "
@@ -308,4 +337,40 @@ enregistre_historique.
                   END-READ
                END-PERFORM
             END-START
+         CLOSE Fachat.
+
+ajout_achat.
+         OPEN I-O Fachat
+            PERFORM WITH TEST AFTER UNTIL fa_idAchat > 0 AND w_ae = 1
+               DISPLAY "Saisir l'identifiant de l'achat : "
+               ACCEPT wa_idAchat
+               PERFORM recherche_achat
+            END-PERFORM
+
+            PERFORM WITH TEST AFTER UNTIL fp_idProduit > 0 AND w_pe = 1
+               DISPLAY "Saisir l'identifiant du produit : "
+               ACCEPT fp_idProduit
+               PERFORM recherche_produit
+            END-PERFORM
+            PERFORM WITH TEST AFTER UNTIL wh_annee>2000 AND wh_mois>0
+                                          AND wh_mois<13 AND wa_jour>0
+                                                AND wa_jour<32
+               DISPLAY "Saisir l'annee d'achat : "
+               ACCEPT wh_annee
+               DISPLAY "Saisir le mois d'achat : "
+               ACCEPT wh_mois
+               DISPLAY "Saisir le jour d'achat : "
+               ACCEPT wa_jour
+            END-PERFORM
+            PERFORM WITH TEST AFTER UNTIL fe_idEmploye > 0 AND w_ee = 1
+               DISPLAY "Saisir l'id employe : "
+               ACCEPT fe_idEmploye
+               PERFORM recherche_employe
+            END-PERFORM
+            PERFORM WITH TEST AFTER UNTIL fc_idClient > 0 AND w_ce = 1
+               DISPLAY "Saisir l'id du client : "
+               ACCEPT fc_idClient
+               PERFORM recherche_client
+            END-PERFORM
+            WRITE achatTemp
          CLOSE Fachat.
