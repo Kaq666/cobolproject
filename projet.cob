@@ -109,7 +109,7 @@ DATA DIVISION.
           77 VRAI PIC X VALUE "V".
           77 FAUX PIC x VALUE "F".
           77 FIN-MENU PIC X.
-          77 CHOIX-MENU PIC X.  
+          77 CHOIX-MENU PIC X.
 
           77 we_idEmploye PIC 9(4).
           77 we_nom PIC A(30).
@@ -123,7 +123,7 @@ DATA DIVISION.
           77 wh_annee PIC 9(4).
           77 wh_mois PIC 9(4).
           77 wh_compteur PIC 9(5).
-      
+
           77 w_login PIC 9(1).
 
 PROCEDURE DIVISION.
@@ -132,8 +132,7 @@ PROCEDURE DIVISION.
              MOVE VRAI TO ERREUR.
              PERFORM MENU UNTIL FIN-MENU = VRAI.
 STOP RUN.
-      
-      
+
 menu.
          IF fe_role = 1
            THEN PERFORM menu_admin
@@ -164,7 +163,7 @@ menu_admin.
          WHEN OTHER
                 DISPLAY "choix non valide."
          END-EVALUATE.
-      
+
 menu_employe.
          DISPLAY "Quelle action souhaitez-vous faire ?"
          DISPLAY " "
@@ -185,7 +184,7 @@ menu_employe.
          WHEN OTHER
                 DISPLAY "choix non valide."
          END-EVALUATE.
-      
+
 login.
          OPEN INPUT Femploye
             PERFORM WITH TEST AFTER UNTIL w_login > 0
@@ -205,7 +204,7 @@ login.
                     END-READ
             END-PERFORM
          CLOSE Femploye.
-      
+
 recherche_produit.
          OPEN INPUT Fproduit
             PERFORM WITH TEST AFTER UNTIL fp_idProduit > 0
